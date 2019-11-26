@@ -1,0 +1,64 @@
+{% extends 'exam/base.html' %}
+
+{% block headers %}
+{% load staticfiles %}
+<script type="text/javascript" src="{% static 'exam/exam.js' %}"> </script>
+{% endblock %}
+
+{% block main %}
+
+    <form method="POST">
+    {% csrf_token %}
+        {% for qs,ans in abc.items %}
+        <div id="{{ forloop.counter }}">
+            <p class="display-4">{{ forloop.counter }}) {{ qs }}</p>
+            {% for aaa in ans %}
+                <input type="radio" name="{{ forloop.parentloop.counter }}" value="{{ forloop.counter }}" checked>{{ forloop.counter }}) {{ aaa }}}<br>
+            {% endfor %}
+        </div>
+        {% empty %}
+            <p> No questions </p>
+        {% endfor %}
+        <input id="submit" type="submit" value="Submit"> 
+    </form> 
+
+    <button onclick="myFunction()">Try it</button>
+{% endblock %}
+
+{% block sidebar %}
+<p id="demo" class="display-4"></p>
+
+<script>
+    // Set the date we're counting down to
+    var counter = 10
+    if (sessionStorage.getItem("counter") != null  ){
+            counter = sessionStorage.getItem("counter")-1
+            sessionStorage.setItem("counter", counter);
+    }
+    else {
+        sessionStorage.setItem("counter", counter);
+    }
+    var x = setInterval(function() {
+
+        counter = sessionStorage.getItem("counter");
+
+        var hour = Math.floor(counter / 3600);
+        var min = Math.floor((counter - hour * 3600)/60); 
+        var sec = (counter - hour * 3600 - min * 60);
+    
+        
+      // Output the result in an element with id="demo"
+      document.getElementById("demo").innerHTML = hour + "h "
+      + min + "m " + sec + "s ";
+    
+     counter--;
+     sessionStorage.setItem("counter", counter);
+        
+      // If the count down is over, write some text 
+      if (counter < 0) {
+        document.getElementById("demo").innerHTML = "EXPIRED";
+        var button = document.getElementById('submit').click();
+      }
+    }, 1000);
+    </script>
+{% endblock %}

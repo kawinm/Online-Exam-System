@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        
+        <title>
+            {% block title %} Oes {% endblock %}
+        </title>
+        <style>
+            .oes-masthead {
+                background-color: #EEEEEE;
+                margin-bottom: 1em;
+            }
+        </style>
+
+        {% block headers %} {% endblock %}
+    </head>
+    <body>
+        <div class="oes-masthead">
+            <div class="container">
+                <nav class="nav">
+                    <div class="navbar-brand">College Name</div>
+                    <a class="nav-link" href="#">Profile</a>
+                </nav>
+            </div>
+        </div>
+
+        <div class='container'>
+            <div class="row">
+                <div class="col-sm-8 mymdb-main">
+                    {% block main %} {% endblock %}
+                </div>
+                <div class="col-sm-3 offset-sm-1 mymdb-sidebar">
+                    {% block sidebar %} {% endblock %}
+                </div>
+            </div>
+        </div>
+    </body> 
+</html>
