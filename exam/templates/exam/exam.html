@@ -1,64 +1,168 @@
-{% extends 'exam/base.html' %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        
+        <!-- Font special for pages-->
+        <link href="https://fonts.googleapis.com/css?family=Poppins:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+        <title>
+            Exam
+        </title>
 
-{% block headers %}
-{% load staticfiles %}
-<script type="text/javascript" src="{% static 'exam/exam.js' %}"> </script>
-{% endblock %}
-
-{% block main %}
-
-    <form method="POST">
-    {% csrf_token %}
-        {% for qs,ans in abc.items %}
-        <div id="{{ forloop.counter }}">
-            <p class="display-4">{{ forloop.counter }}) {{ qs }}</p>
-            {% for aaa in ans %}
-                <input type="radio" name="{{ forloop.parentloop.counter }}" value="{{ forloop.counter }}" checked>{{ forloop.counter }}) {{ aaa }}}<br>
-            {% endfor %}
+        {% load staticfiles %}
+        <link href="{% static 'exam/css/exam.css' %}" rel="stylesheet" media="all">
+    </head>
+    <body>
+        <div class="oes-masthead">
+            <div class="container">
+                <nav class="nav">
+                    <div class="navbar-brand">College Name</div>
+                </nav>
+            </div>
         </div>
-        {% empty %}
-            <p> No questions </p>
-        {% endfor %}
-        <input id="submit" type="submit" value="Submit"> 
-    </form> 
-
-    <button onclick="myFunction()">Try it</button>
-{% endblock %}
-
-{% block sidebar %}
-<p id="demo" class="display-4"></p>
-
-<script>
-    // Set the date we're counting down to
-    var counter = 10
-    if (sessionStorage.getItem("counter") != null  ){
-            counter = sessionStorage.getItem("counter")-1
-            sessionStorage.setItem("counter", counter);
-    }
-    else {
-        sessionStorage.setItem("counter", counter);
-    }
-    var x = setInterval(function() {
-
-        counter = sessionStorage.getItem("counter");
-
-        var hour = Math.floor(counter / 3600);
-        var min = Math.floor((counter - hour * 3600)/60); 
-        var sec = (counter - hour * 3600 - min * 60);
-    
         
-      // Output the result in an element with id="demo"
-      document.getElementById("demo").innerHTML = hour + "h "
-      + min + "m " + sec + "s ";
-    
-     counter--;
-     sessionStorage.setItem("counter", counter);
+        <div class="student-details">
+            <div class='container-fluid'>
+              <div class="row student-row">
+                  {% for st in student %}
+              <div class="col-sm-8">
+                  <p class="detail-fields"> Name: {{ st.first_name }} {{ st.last_name }}</p>
+                  <p class="detail-fields"> Year: {{ st.year }}</p>
+                  {% endfor %}
+                  {% for exam in exam_details %}
+                  <p class="detail-fields"> Exam Name: {{ exam.exam_name }}</p>
+                  {% endfor %}
+              </div>
+              <div class="col-sm-4">
+                <p class="timer">Duration: </p>
+                <p id="demo" class="timer"> </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class='container-fluid qs-container'>
+            <div class="row qs-row">
+                <div class="col-sm-8 page-wrapper">
+                  <div class="card-body">
+                    <form method="POST">
+                        {% csrf_token %}      
+                            {% for qs,ans in question_set.items %}
+                            <div class="qs" id="{{ forloop.counter }}">
+                                <p class="display-4 qs-no">Question No: {{ forloop.counter }}</p>
+                                <hr>
+                                <br>
+                                <p class="display-4 ques">{{ forloop.counter }}) {{ qs }}</p>
+                                {% for aaa in ans %}
+                                    <div class="answer">
+                                    <input class="radio" type="radio" name="{{ forloop.parentloop.counter }}" value="{{ forloop.counter }}" checked>  {{ forloop.counter }})  {{ aaa }}<br>
+                                  </div>
+                                {% endfor %}
+                            </div>
+                            {% empty %}
+                                <p> No questions </p>
+                            {% endfor %}
+                            <div class="submit-container">
+                            <input class="btn btn-success submit" id="submit" type="submit" value="Submit">
+                            </div> 
+                        </form> 
+                  </div>
+                      <div class="qs-buttons">
+                        <button id="btn-left" class="btn btn-secondary btn-left" onclick="plusDivs(-1)">&#10094; Previous</button>
+                      <button id="btn-right" class="btn btn-secondary btn-right" onclick="plusDivs(1)">Next &#10095;</button>
+                    </div>
+                    </div>
+                  <div class="col-sm-3 offset-sm-1 mymdb-sidebar">
+                      
+                  </div>
+              </div>
+          </div>
+      </body> 
+
+      <script>
         
-      // If the count down is over, write some text 
-      if (counter < 0) {
-        document.getElementById("demo").innerHTML = "EXPIRED";
-        var button = document.getElementById('submit').click();
+    //To disable right click
+    document.addEventListener('contextmenu', event => event.preventDefault());
+
+
+  //Slideshow creator
+  var slideIndex = 1;
+  showDivs(slideIndex);
+  
+  function plusDivs(n) {
+    showDivs(slideIndex += n);
+  }
+  
+  function showDivs(n) {
+    var i;
+    var x = document.getElementsByClassName("qs");
+    var button = document.getElementById("submit");
+    if (n > x.length) {slideIndex = 1}
+    if (n < 1) {slideIndex = x.length}
+    for (i = 0; i < x.length; i++) {
+      x[i].style.display = "none";  
+    }
+    button.style.display = "none"
+
+    if ( document.getElementById("btn-right").classList.contains('disabled') ) {
+      document.getElementById("btn-right").classList.remove('disabled');
+    }
+
+    if (n==x.length) {
+      button.style.display = "inline"
+      document.getElementById("btn-right").classList.add('disabled');
+    }
+
+    if ( document.getElementById("btn-left").classList.contains('disabled') ) {
+      document.getElementById("btn-left").classList.remove('disabled');
+    }
+
+    if (n==1) {
+      document.getElementById("btn-left").classList.add('disabled');
+    }
+
+    
+    x[slideIndex-1].style.display = "block";  
+  }
+
+
+    //Counter generator 
+      {% for exam in exam_details %}
+      // eslint-disable-next-line [RULE]
+      var counter = {{ exam.total_time }} * 60
+      {% endfor %}
+      if (sessionStorage.getItem("counter") != null  ){
+              counter = sessionStorage.getItem("counter")-1
+              sessionStorage.setItem("counter", counter);
       }
-    }, 1000);
-    </script>
-{% endblock %}
+      else {
+          sessionStorage.setItem("counter", counter);
+      }
+      var x = setInterval(function() {
+  
+          counter = sessionStorage.getItem("counter");
+  
+          var hour = Math.floor(counter / 3600);
+          var min = Math.floor((counter - hour * 3600)/60); 
+          var sec = (counter - hour * 3600 - min * 60);
+      
+          
+        // Output the result in an element with id="demo"
+        document.getElementById("demo").innerHTML = hour + "h "
+        + min + "m " + sec + "s ";
+      
+       counter--;
+       sessionStorage.setItem("counter", counter);
+          
+        // If the count down is over, write some text 
+        if (counter < 0) {
+          document.getElementById("demo").innerHTML = "EXPIRED";
+          var button = document.getElementById('submit').click();
+        }
+      }, 1000);
+      </script>
+  </html>
+
+

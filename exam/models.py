@@ -1,6 +1,15 @@
 from django.db import models
 from user.models import Year
 
+class Answer(models.Model):
+    student_id = models.IntegerField()
+    qs_id = models.IntegerField()
+    choice_id = models.IntegerField()
+    exam_id = models.IntegerField()
+        
+    def __str__(self):
+        return str(self.student_id) +" - " + str(self.qs_id) 
+
 class Exam(models.Model):
     exam_name = models.CharField(max_length=150)
     year = models.ForeignKey(Year, on_delete=models.DO_NOTHING)
@@ -29,3 +38,12 @@ class Choice(models.Model):
 
     def __str__(self):
         return self.choice_text
+
+class Mark(models.Model):
+    student_id = models.IntegerField(default=1)
+    exam_id = models.IntegerField(default=1)
+    mark = models.IntegerField(default=1)
+
+    def __str__(self):
+        return str(self.student_id) + " - " + str(self.mark)
+

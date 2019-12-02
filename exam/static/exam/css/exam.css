@@ -1,0 +1,93 @@
+* {
+    font-family: "Poppins", "Arial", "Helvetica Neue", "sans-serif";
+    font-weight: 400;
+    font-size: 14px;
+}
+
+/* To disable text selection or copying */
+body {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+.oes-masthead {
+    background-color: white;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+    position: relative;
+    z-index: 10;
+}
+
+.detail-fields{
+    font-size: 17px;
+    margin: 0px;
+    margin-left: 50px;
+}
+
+.qs-buttons {
+    padding: 10px;
+    border-radius: 8px;
+    background: white;
+    margin: 20px;
+    margin-left: 50px;
+    margin-right: 0px;
+}
+
+.btn-right {
+    width: 100px;
+    float: right;
+}
+
+.btn-left {
+    width: 100px;
+}
+
+.timer {
+    font-size: 25px;
+    display: inline;
+}
+
+.student-row {
+    padding: 20px;
+}
+
+.qs-row {
+    height: -webkit-fill-available;
+}
+
+.qs-container {
+    background: #f0f0f0;
+}
+
+.card-body {
+    margin-left: 50px;
+    margin-top: 50px;
+    border-radius: 8px;
+    background: white;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+}
+
+.qs-no {
+    font-size: 25px;
+}
+
+.ques {
+    display: block;
+    font-size: 23px;
+}
+
+.answer {
+    padding: 15px;
+}
+
+.submit-container {
+    overflow: hidden;
+}
+
+.submit {
+    float: right;
+    width: 100px;
+}
