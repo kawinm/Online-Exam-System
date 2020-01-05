@@ -13,7 +13,7 @@
         {% load staticfiles %}
 
         <!-- Main CSS-->
-        <link href="{% static 'exam/css/main.css' %}" rel="stylesheet" media="all">
+        <link href="{% static 'exam/css/mark.css' %}" rel="stylesheet" media="all">
         <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
         <!-- Font special for pages-->
@@ -48,20 +48,25 @@
                 <div class="col-sm-9" >
                     <div class="page-wrapper">
                         <div class="card-body">
-                            <p class="display-4">Exam list</p>
+                            <!-- <p class="display-4">You scored:</p> -->
                             <br>
-                            {% for ex in exam %}
                                 <br>
+                                {% for ex in exam %}
                                 <div class="exam-tag">
-                                    <a class="exam-name" href="{% url 'exam:take_exam' pk=ex.id %}"> {{ ex.exam_name }} </a>
+                                    <a class="exam-name" href="{% url 'exam:main' %}"> {{ ex.exam_name }} </a>
                                     <br>
                                     <br>
-                                    <p> Total Mark : {{ ex.total_marks }}</p>
-                                    <p> Duration : {{ ex.total_time }} minutes</p>
+                                    <p> You scored {{ mark }}</p>
+                                    <div class="option-buttons">
+                                        <a href="{% url 'exam:generate_pdf' exam=ex.id %}" class="btn btn-primary btn-left">Download</a>
+                                        {% for st in student %}
+                                        <a href="{% url 'exam:review_exam' exam=ex.id student=st.id %}" class="btn btn-danger btn-right">Review</a>
+                                        {% endfor %}
+                                    </div>
                                     <!-- <p> Starts on : {{ ex.start_date_time }}</p> -->
                                 </div>
+                                {% endfor %}
                                 <br />
-                            {% endfor %}
                         </div>
                     </div>
                 </div>

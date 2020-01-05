@@ -18,11 +18,11 @@ def register(request):
             
             # Saving registered value
             post = form.save()
-            post.is_active = False
+            post.is_active = True
             post.save()
 
             #Sending confirmation mail 
-            current_site = get_current_site(request)
+            """ current_site = get_current_site(request)
             mail_subject = 'Activate your account.'
             message = render_to_string('user/acc_active_email.html', {
                     'user': post,
@@ -35,7 +35,8 @@ def register(request):
                 mail_subject, message, to=[to_email]
             )
             email.send()
-            return HttpResponse('Please confirm your email address to complete the registration')
+            return HttpResponse('Please confirm your email address to complete the registration') """
+            return redirect('admin:index')
         else:
             message = 'Email id is already registered.'
             form = RegisterForm()
@@ -65,8 +66,11 @@ def login(request):
             return render(request, 'user/login.html', {'form': form, 'message':message})
         return redirect('user:login')
     else:
-        form = LoginForm()
-        return render(request, 'user/login.html', {'form': form})
+        if 'username' not in request.COOKIES:
+            form = LoginForm()
+            return render(request, 'user/login.html', {'form': form})
+        else:
+            return redirect('exam:main')
 
 def activate(request, uidb64, token):
     try:

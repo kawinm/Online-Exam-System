@@ -14,7 +14,7 @@ class Exam(models.Model):
     exam_name = models.CharField(max_length=150)
     year = models.ForeignKey(Year, on_delete=models.DO_NOTHING)
     total_marks = models.IntegerField(default=0)
-    start_date_time = models.DateTimeField(blank=True, null=True)
+    #start_date_time = models.DateTimeField(blank=True, null=True)
     total_time = models.IntegerField(default=0, help_text="Enter in minutes")
     active = models.BooleanField(default=False, blank = True)
 

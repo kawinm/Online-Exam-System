@@ -1,0 +1,32 @@
+textarea {
+    width: 500px;
+    height: 300px;
+}
+
+input {
+    width: 500px;
+}
+
+.btn {
+    background-color: #428BCA !important;
+    margin: 10px 5px;
+}
+
+.container {
+    display: inline-grid;
+    grid-template-columns: 3fr 1fr;
+}
+
+.content-main {
+    margin-left: 10%;
+}
+
+.side-bar {
+    margin-right: 10%;
+}
+pre {
+    font-family: "Roboto","Lucida Grande","DejaVu Sans","Bitstream Vera Sans",Verdana,Arial,sans-serif;
+    font-size: 15px;
+    background-color: #f2f2f2;
+    padding: 15px 15px;
+}

@@ -12,9 +12,9 @@
         </title>
 
         {% load staticfiles %}
-        <link href="{% static 'exam/css/exam.css' %}" rel="stylesheet" media="all">
+        <link href="{% static 'exam/css/review.css' %}" rel="stylesheet" media="all">
     </head>
-    <body>
+    <body >
         <div class="oes-masthead">
             <div class="container">
                 <nav class="nav">
@@ -36,8 +36,8 @@
                   {% endfor %}
               </div>
               <div class="col-sm-4">
-                <p class="timer">Duration: </p>
-                <p id="demo" class="timer"> </p>
+                <!-- <p class="timer">Duration: </p>
+                <p id="demo" class="timer"> </p> -->
               </div>
             </div>
           </div>
@@ -47,39 +47,32 @@
             <div class="row qs-row">
                 <div class="col-sm-8 page-wrapper">
                   <div class="card-body">
-                    <form method="POST">
-                        {% csrf_token %}      
+                    <div>
+                             
                             {% for qs,ans in question_set.items %}
                             <div class="qs" id="{{ forloop.counter }}">
                                 <p class="display-4 qs-no">Question No: {{ forloop.counter }}</p>
                                 <hr>
                                 <br>
-                                <p class="display-4 ques">{{ forloop.counter }}) {{ qs }}</p>
+                                <p class="display-4 ques" id="{{ qs.id }}">{{ forloop.counter }}) {{ qs }}</p>
                                 {% for aaa in ans %}
-                                    <div class="answer">
-                                    <input class="radio" type="radio" name="{{ forloop.parentloop.counter }}" value="{{ forloop.counter }}" checked>  {{ forloop.counter }})  {{ aaa }}<br>
+                                    <div class="answer {{ qs.id }}">
+                                    <p >  {{ forloop.counter }})  {{ aaa }}</p><br>
                                   </div>
                                 {% endfor %}
                             </div>
                             {% empty %}
                                 <p> No questions </p>
                             {% endfor %}
-                            <div class="submit-container">
-                            <input class="btn btn-success submit" id="submit" type="submit" value="Submit">
-                            </div> 
-                        </form> 
+                            </div>
                   </div>
                       <div class="qs-buttons">
                         <button id="btn-left" class="btn btn-secondary btn-left" onclick="plusDivs(-1)">&#10094; Previous</button>
                       <button id="btn-right" class="btn btn-secondary btn-right" onclick="plusDivs(1)">Next &#10095;</button>
                     </div>
                     </div>
-                  <div class="col-sm-3 offset-sm-1 side-bar">
-                      <div class="button-container">
-                        {% for qs,ans in question_set.items %}
-                        <button id="btn-left" class="btn btn-secondary btn-nav" onclick="jumpDivs({{ forloop.counter }})"> {{ forloop.counter }}</button>
-                        {% endfor %}
-                      </div>
+                  <div class="col-sm-3 offset-sm-1 mymdb-sidebar">
+                      
                   </div>
               </div>
           </div>
@@ -87,17 +80,26 @@
 
       <script>
         
-    //To disable right click
-    //document.addEventListener('contextmenu', event => event.preventDefault());
+        function markAnswer(qs_id, wrong_ans, correct_ans) {
+            x = document.getElementsByClassName(qs_id);
+            x[wrong_ans].style.backgroundColor = "#ff4154";  
+            x[correct_ans].style.backgroundColor = "#25f955";
+        }
 
-
+            var qs_id = ""
+            var x = ""
+            var i =""
+            {% for ans, cans in answer %}
+                qs_id = {{ans.qs_id}}                
+                x = {{ ans.choice_id }} -1
+                i = {{ cans }} -1   
+                markAnswer(qs_id, x, i)            
+            {% endfor %}
+        
   //Slideshow creator
   var slideIndex = 1;
   showDivs(slideIndex);
   
-  function jumpDivs(n) {
-    showDivs(n);
-  }
   function plusDivs(n) {
     showDivs(slideIndex += n);
   }
@@ -105,21 +107,17 @@
   function showDivs(n) {
     var i;
     var x = document.getElementsByClassName("qs");
-    var button = document.getElementById("submit");
-    slideIndex = n;
     if (n > x.length) {slideIndex = 1}
     if (n < 1) {slideIndex = x.length}
     for (i = 0; i < x.length; i++) {
       x[i].style.display = "none";  
     }
-    button.style.display = "none"
 
     if ( document.getElementById("btn-right").classList.contains('disabled') ) {
       document.getElementById("btn-right").classList.remove('disabled');
     }
 
     if (n==x.length ||  n == 0) {
-      button.style.display = "inline"
       document.getElementById("btn-right").classList.add('disabled');
     }
 
@@ -136,40 +134,7 @@
   }
 
 
-    //Counter generator 
-      {% for exam in exam_details %}
-      // eslint-disable-next-line [RULE]
-      var counter = {{ exam.total_time }} * 60
-      {% endfor %}
-      if (sessionStorage.getItem("counter") != null  ){
-              counter = sessionStorage.getItem("counter")-1
-              sessionStorage.setItem("counter", counter);
-      }
-      else {
-          sessionStorage.setItem("counter", counter);
-      }
-      var x = setInterval(function() {
-  
-          counter = sessionStorage.getItem("counter");
-  
-          var hour = Math.floor(counter / 3600);
-          var min = Math.floor((counter - hour * 3600)/60); 
-          var sec = (counter - hour * 3600 - min * 60);
-      
-          
-        // Output the result in an element with id="demo"
-        document.getElementById("demo").innerHTML = hour + "h "
-        + min + "m " + sec + "s ";
-      
-       counter--;
-       sessionStorage.setItem("counter", counter);
-          
-        // If the count down is over, write some text 
-        if (counter < 0) {
-          document.getElementById("demo").innerHTML = "EXPIRED";
-          var button = document.getElementById('submit').click();
-        }
-      }, 1000);
+    
       </script>
   </html>
 

@@ -31,10 +31,10 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'exam',
     'user',
     'django.contrib.admin',
     'django.contrib.auth',
+    'exam',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',

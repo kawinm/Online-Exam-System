@@ -1,0 +1,108 @@
+.oes-masthead {
+    background-color: white;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+    position: relative;
+    z-index: 10;
+}
+
+* {
+    font-family: "Poppins", "Arial", "Helvetica Neue", "sans-serif";
+    font-weight: 400;
+    font-size: 14px;
+}
+
+.row {
+    height: -webkit-fill-available;
+}
+
+.page-wrapper {
+    margin: 15% 2%;
+}
+.col-sm-3 {
+    padding: 0px !important;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23); 
+    position: relative;
+    z-index: 10;
+}
+
+.col-sm-9 {
+    background: linear-gradient(to top right, #680de0 0%, #942ab3 100%);
+}
+.card-body {
+    background: white;
+    padding: 50px !important;
+    margin: 50px;
+    border-radius: 10px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+}
+
+.card-body:hover {
+    box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+}
+
+.exam-tag {
+    padding: 25px;
+    background: #f0f0f0;
+    border-radius: 5px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+}
+
+.option-buttons {
+    display: relative;
+    padding: 10px;
+    border-radius: 8px;
+}
+
+.btn-right {
+    width: 100px;
+    float: right;
+}
+
+.btn-left {
+    width: 100px;
+}
+
+.display-4 {
+    text-align: center;
+    vertical-align: middle;
+}
+
+@media (max-width: 767px) {
+    .display-4 {
+        font-size: 25px !important;
+    }
+}
+
+.student-name {
+    text-align: center;
+    vertical-align: middle;
+    width: 100%;
+    font-size: 22px;
+    margin-top: 25px;
+    background: deepskyblue;
+}
+
+.student-year {
+    text-align: center;
+    vertical-align: middle;
+    width: 100%;
+    font-size: 17px;
+}
+
+@media (max-width: 767px) {
+    .student-year {
+        font-size: 12px !important;
+    }
+}
+
+.exam-name {
+    font-size: 25px;
+}
+
+@media (max-width: 767px) {
+    .exam-name {
+        font-size: 15px !important;
+    }
+}
+

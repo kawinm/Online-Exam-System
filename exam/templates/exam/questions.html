@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+
+<html lang="en-us" >
+
+<head>
+    <title>Add Questions | Admin Panel</title>
+    <link rel="stylesheet" type="text/css" href="/static/admin/css/base.css">
+    <link rel="stylesheet" type="text/css" href="/static/admin/css/dashboard.css">
+
+    {% load staticfiles %}
+    <link href="{% static 'exam/css/add_questions.css' %}" rel="stylesheet" media="all">
+    <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="/static/admin/css/responsive.css">
+    
+</head>
+
+<body class=" dashboard" data-admin-utc-offset="0">
+
+    <!-- Container -->
+    <div id="container">
+  
+    <!-- Header -->
+    <div id="header">
+        <div id="branding">
+        
+            <h1 id="site-name"><a href="/admin/">Admin Panel</a></h1>
+
+        </div>
+              
+        <div id="user-tools">      
+                Welcome, <strong>admin</strong>.       
+                    <a href="https://github.com/kawinm/Online-Exam-System">View site</a> /
+
+                <a href="/admin/password_change/">Change password</a> /
+                <a href="/admin/logout/">Log out</a>
+            
+        </div>
+    </div>
+    <!-- END Header -->
+    
+    <!-- Content -->
+    <div id="content" class="colMS">
+        <h1>Add Questions</h1>
+    </div>
+
+    <div class="container">
+        <div class="content-main">
+            <form method="POST">
+                {% csrf_token %} 
+                    <span><p>Exam name: </p><input name="exam" type="text" list="exam" /></span>
+
+                    <datalist id="exam">
+                        {% for ex in exam %}
+                            <option value="{{ ex.exam_name }}"></option> 
+                        {% endfor %}    
+                    </datalist>
+
+                    <br />
+                    <br />
+
+                    <span><p>Questions: </p><textarea type="reset" name="qs" placeholder="Enter your questions with choice here.."></textarea></span>
+                    <input class="btn btn-success submit" id="submit" type="submit" value="Add">
+            </form>  
+        </div>
+        <div class="side-bar">
+            <pre>
+                <strong>Format</strong> to Add questions and their respective choices:
+
+                Question text 
+                Correct Answer in number (like 1 or 3)
+                Choice text each in <strong>Separate line</strong>
+                Add <strong>New line</strong> before adding next Questions text
+            </pre>
+        </div>
+    </div>
+</body>
+</html>
+        
+
+
+

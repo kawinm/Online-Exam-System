@@ -54,11 +54,12 @@
                     <form method="POST" class="register-form">
                         {% csrf_token %}
                         {{ form.as_p }}
+                        <button onclick="generatePassword()">Generate password</button>
                         <br />
-                        
-                        <div class="alert alert-light" style="display: inline-block; padding-left:0px;" role="alert">
+                        <br />
+                        <!-- <div class="alert alert-light" style="display: inline-block; padding-left:0px;" role="alert">
                             Already have an account?  <a  href= "{% url 'user:login' %}" style="line-height:30px; padding:0px 10px; margin-left: 15px; font-size: small;" class="btn btn-secondary" >Login</a>
-                        </div>
+                        </div> -->
 
                         <button class="btn btn--radius-2 btn--blue" style="float: right;" type="submit" class="save btn btn-default">Register</button>
                     </form>
@@ -82,4 +83,10 @@
 
 </body>
 
+<script>
+    function generatePassword() {
+        var password = Math.random().toString(36).slice(-10);
+        document.getElementById("password").value = password;
+    }
+</script>
 </html>

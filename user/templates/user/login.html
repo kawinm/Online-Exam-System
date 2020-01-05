@@ -55,10 +55,10 @@
                         {% csrf_token %}
                         {{ form.as_p }}
                         <br />
-                        
+                        <!--
                         <div class="alert alert-light" style="display: inline-block; padding-left:0px;" role="alert">
                             New to the site?  <a  href= "{% url 'user:register' %}" style="line-height:30px; padding:0px 10px; margin-left: 15px; font-size: small;" class="btn btn-secondary" >Register</a>
-                        </div>
+                        </div> -->
 
                         <button class="btn btn--radius-2 btn--blue" style="float: right;" type="submit" class="save btn btn-default">Login</button>
                     </form>

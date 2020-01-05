@@ -16,6 +16,12 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
+admin.site.site_header = 'Admin Panel'
+admin.site.site_title = 'Admin Panel'
+admin.site.site_url = 'https://github.com/kawinm/Online-Exam-System'
+admin.site.index_title = 'Admin Panel'
+admin.empty_value_display = '**Empty**'
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('user.urls')),
