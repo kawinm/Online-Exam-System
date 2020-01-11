@@ -56,7 +56,7 @@
                                     <a class="exam-name" href="{% url 'exam:main' %}"> {{ ex.exam_name }} </a>
                                     <br>
                                     <br>
-                                    <p> You scored {{ mark }}</p>
+                                    <p> You scored {{ mark }}/{{ ex.total_marks }}</p>
                                     <div class="option-buttons">
                                         <a href="{% url 'exam:generate_pdf' exam=ex.id %}" class="btn btn-primary btn-left">Download</a>
                                         {% for st in student %}

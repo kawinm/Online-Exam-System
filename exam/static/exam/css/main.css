@@ -1,8 +1,17 @@
+html {
+    height: 100%;
+}
+
+body {
+    height: 100%;
+}
+
 .oes-masthead {
     background-color: white;
     box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
     position: relative;
     z-index: 10;
+    height: 5%;
 }
 
 * {
@@ -43,6 +52,19 @@
     background: #f0f0f0;
     border-radius: 5px;
     box-shadow: 0 1px 2px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+}
+
+.attended {
+    background: #d7d7d7;
+}
+
+.exam-name {
+    text-decoration: none;
+}
+
+.attended-name, .attended-name:hover {
+    color: #000;
+    text-decoration: none;
 }
 
 .display-4 {

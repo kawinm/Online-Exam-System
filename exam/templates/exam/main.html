@@ -39,7 +39,7 @@
                 <div class="col-sm-3" >
                     <div class="side-bar-wrapper">
                         {% for st in student %}
-                            <p class="student-name">{{ st.first_name }} {{ st.last_name }} </p>
+                            <p class="student-name">{{ st.first_name |title}} {{ st.last_name |title}} </p>
                             <p class="student-year">{{ st.year }} </p>
                         {% endfor %}
                     </div>
@@ -53,11 +53,33 @@
                             {% for ex in exam %}
                                 <br>
                                 <div class="exam-tag">
-                                    <a class="exam-name" href="{% url 'exam:take_exam' pk=ex.id %}"> {{ ex.exam_name }} </a>
+                                    <a class="exam-name" href="{% url 'exam:take_exam' pk=ex.id %}"> {{ ex.exam_name | title}} </a>
                                     <br>
                                     <br>
                                     <p> Total Mark : {{ ex.total_marks }}</p>
                                     <p> Duration : {{ ex.total_time }} minutes</p>
+                                    <!-- <p> Starts on : {{ ex.start_date_time }}</p> -->
+                                </div>
+                                <br />
+                            {% endfor %}
+                        </div>
+                        <div class="card-body">
+                            <p class="display-4">Attended</p>
+                            <br>
+                            {% for ex in attended_exam %}
+                                <br>
+                                <div class="attended exam-tag">
+                                    <a class="attended-name exam-name" href="{% url 'exam:take_exam' pk=ex.id %}"> {{ ex.exam_name | title}} </a>
+                                    <br>
+                                    <br>
+                                    <p> Total Mark : {{ ex.total_marks }}</p>
+                                    <p> Duration : {{ ex.total_time }} minutes</p>
+                                    <div class="option-buttons">
+                                        <a href="{% url 'exam:generate_pdf' exam=ex.id %}" class="btn btn-primary btn-left">Download</a>
+                                        {% for st in student %}
+                                        <a href="{% url 'exam:review_exam' exam=ex.id student=st.id %}" class="btn btn-danger btn-right">Review</a>
+                                        {% endfor %}
+                                    </div>
                                     <!-- <p> Starts on : {{ ex.start_date_time }}</p> -->
                                 </div>
                                 <br />

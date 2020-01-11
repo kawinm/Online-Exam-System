@@ -28,9 +28,24 @@ class Question(models.Model):
     exam = models.ForeignKey(Exam, on_delete=models.DO_NOTHING)
     question_text = models.CharField(max_length=200)
     correct_answer = models.IntegerField(default=1)
+    cover = models.ImageField(upload_to='images/questions/', default = None, blank=True, null=True)
 
     def __str__(self):
         return self.question_text 
+
+    def getChoices(self):
+        return Choice.objects.filter(question = self)
+
+    def getChoiceImage(self):
+        return ChoiceImage.objects.filter(question = self)
+        ch = ChoiceImage.objects.filter(question = self).count()
+        if ch != 0:
+            return ChoiceImage.objects.filter(question = self)
+        else:
+            return False
+
+    choice = property(getChoices)
+    choiceImage = property(getChoiceImage)
 
 class Choice(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
@@ -38,6 +53,13 @@ class Choice(models.Model):
 
     def __str__(self):
         return self.choice_text
+
+class ChoiceImage(models.Model):
+    question = models.ForeignKey(Question, on_delete=models.CASCADE)
+    choice_cover = models.ImageField(upload_to='images/choices/', default = None, blank=True, null=True)
+
+    def __str__(self):
+        return str(self.id)
 
 class Mark(models.Model):
     student_id = models.IntegerField(default=1)

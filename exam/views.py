@@ -18,20 +18,24 @@ from reportlab.lib.units import mm, inch
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import A4
 from textwrap import wrap
+from reportlab.lib.utils import ImageReader
 
 def main(request):
     if 'username' in request.COOKIES:
         username = request.COOKIES['username']
         smail = Student.objects.filter(email_id__iexact=username, )
         year = smail.values('year')
+        sid = smail.values('id')[0]
+        answer = Answer.objects.filter(student_id=sid['id'])
+        exam_id = answer.values('exam_id').distinct()
     else:
         return redirect('user:login')
 
     #for y in year:
         #exam = Exam.objects.filter(year__year = y['year'], )
-
-    exam = Exam.objects.all()
-    return render(request, 'exam/main.html', {'username': username, 'exam':exam, 'student':smail})
+    exam = Exam.objects.exclude(pk__in = exam_id)
+    attended_exam = Exam.objects.filter(pk__in = exam_id)
+    return render(request, 'exam/main.html', {'username': username, 'exam':exam, 'attended_exam': attended_exam, 'student':smail})
 
 def take_exam(request, pk):
     if request.method == "POST":
@@ -60,17 +64,17 @@ def take_exam(request, pk):
     if 'username' in request.COOKIES:
         username = request.COOKIES['username']
         smail = Student.objects.filter(email_id__iexact=username, )
+        sid = smail.values('id')[0]
+        answer = Answer.objects.filter(student_id=sid['id'], exam_id=pk).count()
 
-        exam_details = Exam.objects.filter(pk= pk )
+        if answer == 0:
+            exam_details = Exam.objects.filter(pk= pk )
 
-        questions_id_list = Question.objects.filter(exam__pk= pk ).values_list('id', flat=True)
-        question_set = {}
+            questions_set = Question.objects.filter(exam__pk= pk )
 
-        for word in questions_id_list:
-            question = Question.objects.filter(pk= word ).values_list('question_text', flat=True)[0]
-            answer_list = Choice.objects.filter(question__pk = word)
-            question_set[question] = list(answer_list)
-        return render(request, 'exam/exam.html', {'question_set':question_set, 'student': smail, 'exam_details':exam_details})
+            return render(request, 'exam/exam.html', {'question_set':questions_set, 'student': smail, 'exam_details':exam_details})
+        else:
+            return redirect('exam:main')
     else:
         return redirect('user:login')
 
@@ -132,6 +136,10 @@ def add_questions(request):
 def generate_pdf(request, exam):
     exam_details = Exam.objects.filter(pk= exam )
     question_list = Question.objects.filter(exam__pk= exam, )
+
+    response = HttpResponse(content_type='application/pdf')
+
+
     # Create a file-like buffer to receive PDF data.
     buffer = BytesIO()
 
@@ -142,6 +150,9 @@ def generate_pdf(request, exam):
     for word in exam_details.values('exam_name'):
         exam_name = word['exam_name']
         p.drawString(75, 750, exam_name)
+
+    response['Content-Disposition'] = 'attachment; filename="'+exam_name+'.pdf"'
+
     x = 75
     y = 750
     i = 1
@@ -167,6 +178,8 @@ def generate_pdf(request, exam):
         p.drawText(t)
         i+= 1
 
+        #qs_cover = ImageReader(word['cover'].url)
+        #canvas.drawImage(qs_cover, 100, 100, mask='auto')
         question = Question.objects.get(question_text= word['question_text'], )
         a = question.id
         choice_list = Choice.objects.filter(question__pk = a)
@@ -180,15 +193,29 @@ def generate_pdf(request, exam):
     if y >= PAGE_BREAK_COORDINATE:
         p.setFont('Helvetica', 15)
         p.drawString(300, 40, str(page_number))
-            
+
 
     # Close the PDF object cleanly, and we're done.
     p.save()
 
     # FileResponse sets the Content-Disposition header so that browsers
     # present the option to save the file.
-    buffer.seek(0)
-    return FileResponse(buffer, as_attachment=True, filename=exam_name+'.pdf')
+
+    #buffer.seek(0)
+
+    #del(request.env['wsgi.file_wrapper'])
+    #w = FileWrapper(buffer)
+    #content_type = self.object.mimetype or 'application/octet-stream'
+    #response = http.FileResponse(buffer, content_type=content_type)
+    #if self.object.encoding:
+        #response['Content-Encoding'] = self.object.encoding
+    #response['Cache-Control'] = 'public, max-age=31536000'
+    #return response
+    pdf = buffer.getvalue()
+    buffer.close()
+    response.write(pdf)
+    return response
+    #return FileResponse(buffer, as_attachment=True, filename=exam_name+'.pdf')
 
 def review_exam(request, exam, student):
 

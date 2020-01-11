@@ -49,15 +49,28 @@
                   <div class="card-body">
                     <form method="POST">
                         {% csrf_token %}      
-                            {% for qs,ans in question_set.items %}
+                            {% for qs in question_set %}
                             <div class="qs" id="{{ forloop.counter }}">
                                 <p class="display-4 qs-no">Question No: {{ forloop.counter }}</p>
                                 <hr>
                                 <br>
-                                <p class="display-4 ques">{{ forloop.counter }}) {{ qs }}</p>
-                                {% for aaa in ans %}
+                                <p class="display-4 ques">{{ forloop.counter }}) {{ qs.question_text }}</p>
+                                {% if qs.cover %}
+                                  <div class="qs_cover">
+                                    <img src="{{ qs.cover.url }}"  >
+                                  </div>
+                                {% endif %}
+                                
+                                {% for ans in qs.choiceImage %}
+                                  {% if ans %}
+                                    <div class="ans_cover">
+                                      <img src="{{ ans.choice_cover.url }}"  > 
+                                    </div> 
+                                  {% endif %}
+                                {% endfor %}
+                                {% for ans in qs.choice %}
                                     <div class="answer">
-                                    <input class="radio" type="radio" name="{{ forloop.parentloop.counter }}" value="{{ forloop.counter }}" checked>  {{ forloop.counter }})  {{ aaa }}<br>
+                                    <input class="radio" type="radio" name="{{ forloop.parentloop.counter }}" value="{{ forloop.counter }}" checked>  {{ forloop.counter }})  {{ ans.choice_text }}<br>
                                   </div>
                                 {% endfor %}
                             </div>
@@ -70,13 +83,14 @@
                         </form> 
                   </div>
                       <div class="qs-buttons">
-                        <button id="btn-left" class="btn btn-secondary btn-left" onclick="plusDivs(-1)">&#10094; Previous</button>
-                      <button id="btn-right" class="btn btn-secondary btn-right" onclick="plusDivs(1)">Next &#10095;</button>
+                        <button id="btn-left" class="btn btn-secondary btn-left" onclick="plusDivs(-1, 2)">&#10094; Previous</button>
+                      <button id="btn-right" class="btn btn-secondary btn-right" onclick="plusDivs(1, 1)">Next &#10095;</button>
+                      <button id="btn-right" class="btn btn-warning btn-right" onclick="plusDivs(1, 0)">Save &#10095;</button>
                     </div>
                     </div>
                   <div class="col-sm-3 offset-sm-1 side-bar">
                       <div class="button-container">
-                        {% for qs,ans in question_set.items %}
+                        {% for qs in question_set %}
                         <button id="btn-left" class="btn btn-secondary btn-nav" onclick="jumpDivs({{ forloop.counter }})"> {{ forloop.counter }}</button>
                         {% endfor %}
                       </div>
@@ -96,15 +110,27 @@
   showDivs(slideIndex);
   
   function jumpDivs(n) {
-    showDivs(n);
+    showDivs(n, 2);
   }
-  function plusDivs(n) {
-    showDivs(slideIndex += n);
+  function plusDivs(n, op) {
+    showDivs(slideIndex += n, op);
   }
   
-  function showDivs(n) {
+  function showDivs(n, op) {
     var i;
     var x = document.getElementsByClassName("qs");
+    var nav_btn = document.getElementsByClassName("btn-nav");
+
+    if (op == 0) {
+      nav_btn[n-2].classList.remove('btn-secondary');
+      nav_btn[n-2].classList.remove('btn-warning');
+      nav_btn[n-2].classList.add('btn-success');
+    }
+    if (op == 1) {
+      nav_btn[n-2].classList.remove('btn-secondary');
+      nav_btn[n-2].classList.remove('btn-success');
+      nav_btn[n-2].classList.add('btn-warning');
+    }
     var button = document.getElementById("submit");
     slideIndex = n;
     if (n > x.length) {slideIndex = 1}
